@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Meeting Management</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #2C3E50;
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .highlight {
+            background: #F8F9FA;
+            padding: 12px;
+            border-left: 4px solid #875A7B;
+        }
+
+        code {
+            background: #F8F9FA;
+            color: #875A7B;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        table.status-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table.status-table th,
+        table.status-table td {
+            border: 1px solid #EBEEF2;
+            padding: 8px 12px;
+            text-align: left;
+        }
+
+        table.status-table th {
+            background: #F8F9FA;
+            color: #2C3E50;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="mb-4 bg-white p-3"
+                     style=" border: 1px solid #EBEEF2; border-radius: 6px; box-shadow: 0px 8px 20px -4px rgba(0, 0, 0, 0.10); border: 1px solid #EBEEF2;">
+        <h1>Meeting Management</h1>
+        <p>
+            Stop losing the decisions taken in your meetings. This module records the agenda
+            and the minutes of every meeting, keeps the list of attendees, and turns the
+            follow-up points into real tasks that somebody owns and somebody chases.
+        </p>
+        <p>
+            Those follow-up tasks are ordinary <code>project.task</code> records, so they appear in
+            the Project app with all of its kanban, calendar, deadline and timesheet features.
+            There is no second task model to maintain and no data locked inside a custom screen.
+        </p>
+    </div>
+
+    <div class="mb-4 bg-white p-3"
+                     style=" border: 1px solid #EBEEF2; border-radius: 6px; box-shadow: 0px 8px 20px -4px rgba(0, 0, 0, 0.10); border: 1px solid #EBEEF2;">
+        <h2>Key Features</h2>
+        <ul>
+            <li>Meeting register with an automatic reference such as <code>Meet/2026/09/0001</code>.</li>
+            <li>Rich text Agenda and Meeting Minutes on every meeting.</li>
+            <li>Attendees picked from your employees, shown with the employee avatar widget.</li>
+            <li>One click email of the agenda and the minutes to every attendee, using their work email.</li>
+            <li>Files attached to the meeting are attached to that email automatically.</li>
+            <li>The email body is a standard <code>mail.template</code>, so you can restyle it without touching code.</li>
+            <li>Follow-up tasks created straight from the meeting, on Odoo's own <code>project.task</code> model.</li>
+            <li>Tasks open in a clean popup, both when adding a line and when editing an existing one.</li>
+            <li>Smart Status that tells a task finished on time apart from one finished late.</li>
+            <li>Overdue work sorts to the top of the list, so the next follow-up meeting starts where it should.</li>
+            <li>A daily scheduled action keeps the Smart Status honest as dates pass.</li>
+            <li>Meeting, employee and Smart Status filters and group by options added to the Project search view.</li>
+            <li>Full chatter on meetings, with change tracking on the title, date and attendees.</li>
+            <li>Depends only on core Odoo apps. No configuration needed.</li>
+        </ul>
+    </div>
+
+    <div class="mb-4 bg-white p-3"
+                     style=" border: 1px solid #EBEEF2; border-radius: 6px; box-shadow: 0px 8px 20px -4px rgba(0, 0, 0, 0.10); border: 1px solid #EBEEF2;">
+        <h2>How It Works</h2>
+
+        <h3>1. Open the Meeting app and create a meeting</h3>
+        <p>Set the title and the date, pick the attendees, and write the agenda. The meeting reference is generated for you.</p>
+
+        <h3>2. Write the minutes while the meeting runs</h3>
+        <p>The minutes field is a full rich text editor, so headings, lists and tables all survive.</p>
+        <h3>3. Add the follow-up tasks in the Tasks tab</h3>
+        <p>Add a line opens a popup with the task title, the owner, the deadline and the progress. Each task stays linked to the meeting it came from.</p>
+        <h3>4. Email the minutes to everybody who was there</h3>
+        <p>Send Email builds one message per meeting, addressed to the work email of every attendee, with the meeting attachments included.</p>
+        <div class="col-md-12 text-center my-3">
+            <div class="d-inline-block shadow-sm" style="background-color:#fff; border-radius:10px">
+                <img alt="" class="img-fluid" loading="lazy" src="./assets/screenshots/1.png" style="min-height: 1px;">
+            </div>
+        </div>
+
+        <h3>5. Chase the open points from one list</h3>
+    </div>
+
+    <div class="mb-4 bg-white p-3"
+                     style=" border: 1px solid #EBEEF2; border-radius: 6px; box-shadow: 0px 8px 20px -4px rgba(0, 0, 0, 0.10); border: 1px solid #EBEEF2;">
+        <h2>Smart Status</h2>
+        <p>
+            The stage of a task tells you what somebody set. Smart Status tells you what actually
+            happened, by reading the deadline and the completion date together with the state.
+        </p>
+        <table class="status-table">
+            <tr>
+                <th>Smart Status</th>
+                <th>Meaning</th>
+            </tr>
+            <tr>
+                <td>Delayed</td>
+                <td>Still open and the deadline has passed.</td>
+            </tr>
+            <tr>
+                <td>In Progress</td>
+                <td>Work has started and the deadline is still ahead.</td>
+            </tr>
+            <tr>
+                <td>Not Started</td>
+                <td>Nobody has picked it up yet and the deadline is still ahead.</td>
+            </tr>
+            <tr>
+                <td>Done</td>
+                <td>Closed on or before the deadline.</td>
+            </tr>
+            <tr>
+                <td>Done Delayed</td>
+                <td>Closed, but after the deadline. The one your follow-up meeting needs to see.</td>
+            </tr>
+            <tr>
+                <td>Cancelled</td>
+                <td>Dropped.</td>
+            </tr>
+        </table>
+        <p class="mt-3">
+            A stored field cannot notice that today has moved on by itself, so a scheduled action
+            named <strong>Meeting: Refresh Task Smart Status</strong> recomputes the open tasks once a day.
+        </p>
+    </div>
+
+    <div class="mb-4 bg-white p-3"
+                     style=" border: 1px solid #EBEEF2; border-radius: 6px; box-shadow: 0px 8px 20px -4px rgba(0, 0, 0, 0.10); border: 1px solid #EBEEF2;">
+        <h2>Technical Notes</h2>
+        <ul>
+            <li>Developed using the Odoo 19 framework.</li>
+            <li>Depends on <code>mail</code>, <code>hr</code> and <code>project</code> only. No third party or custom module needed.</li>
+            <li>One new model, <code>hr.meeting</code>, with <code>mail.thread</code> for chatter and tracking.</li>
+            <li>Follow-up tasks extend <code>project.task</code>. No parallel task model is introduced.</li>
+            <li>The core Project form, list and search views are extended by inheritance, not replaced.</li>
+            <li>Meeting numbering uses a standard <code>ir.sequence</code>, so you can change the format from the interface.</li>
+            <li>HR Officers get full rights on meetings. Every other internal user gets read only.</li>
+            <li>Installs on Community and Enterprise alike.</li>
+            <li>Licensed under LGPL-3.</li>
+        </ul>
+    </div>
+
+    <div class="mb-4 bg-white p-3 text-center" style=" border: 1px solid #EBEEF2; border-radius: 6px; box-shadow: 0px 8px 20px -4px rgba(0, 0, 0, 0.10); border: 1px solid #EBEEF2;">
+        <a href="mailto:juned.ipe@gmail.com" target="_blank" style="background-color: #7f289b;
+                                        font-family: Montserrat;
+                                        display: inline-block;
+                                        padding: 7px 33px;
+                                        border: 1px solid #7f289b;
+                                        border-radius: 35px;
+                                        text-decoration: none;
+                                        width: 500px;
+                                        color: #fff;
+                                        " class="mx-1 mb-2 deep-1 deep_hover">
+            <img class="img" style="width: 24px" src="./assets/icons/mail.svg" />
+            <span class="pl-2" style="color: #fff; font-size: 16px; vertical-align: middle">juned.ipe@gmail.com</span>
+        </a>
+
+        <a href="https://wa.me/8801819571653" target="_blank" style="
+                                          background-color: #25D366;
+                                          font-family: Montserrat;
+                                          display: inline-block;
+                                          color: #fff;
+                                          padding: 7px 33px;
+                                          border: 1px solid #25D366;
+                                          border-radius: 35px;
+                                          text-decoration: none;
+                                          width: 500px;
+                                        " class="mx-1 mb-2 deep-1 deep_hover">
+            <img class="img" style="width: 24px" src="./assets/icons/whatsapp.svg" />
+            <span class="pl-2" style="color: #fff; font-size: 15px; vertical-align: middle">+880 1819571653</span>
+        </a>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,23 @@
+{
+    'name': 'Meeting',
+    'version': '19.0.1.0.0',
+    'summary': 'Meeting Management',
+    'description': 'This module provides functionalities for managing meetings, including scheduling, tracking, task Management and reporting.',
+    'author': 'Musleh Uddin Juned',
+    'website': 'http://www.zachai-bachhai.com',
+    'category': 'Human Resources',
+    'depends': ['mail', 'hr', 'project'],
+    'data': [
+        'security/ir.model.access.csv',
+        'data/sequence.xml',
+        'data/mail_template.xml',
+        'data/cron.xml',
+        'views/project_task.xml',
+        'views/meeting.xml',
+    ],
+    'images': ['static/description/banner.png'],
+    'installable': True,
+    'auto_install': False,
+    'application': True,
+    'license': 'LGPL-3',
+}

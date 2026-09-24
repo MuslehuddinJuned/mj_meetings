@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Core task form: meeting link, employee, and a Follow-up page -->
+    <record id="view_task_form2_inherit_meeting" model="ir.ui.view">
+        <field name="name">project.task.form.inherit.meeting</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='role_ids']" position="after">
+                <field name="employee_id"
+                       groups="hr.group_hr_user"
+                       options="{'no_create': True, 'no_create_edit': True}"/>
+                <field name="meeting_id"
+                       options="{'no_create': True, 'no_create_edit': True}"/>
+            </xpath>
+            <xpath expr="//page[@name='description_page']" position="after">
+                <page name="meeting_followup_page" string="Follow-up">
+                    <group>
+                        <group>
+                            <field name="progress_percent"/>
+                            <field name="is_routine_work"/>
+                        </group>
+                        <group>
+                            <field name="completion_date"/>
+                            <field name="smart_status"/>
+                        </group>
+                    </group>
+                    <separator string="Remarks"/>
+                    <field name="remarks" placeholder="Notes, blockers, follow-up..."/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Core task list: optional columns -->
+    <record id="view_task_tree_inherit_meeting" model="ir.ui.view">
+        <field name="name">project.task.list.inherit.meeting</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.project_task_view_tree_main_base"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_ids']" position="after">
+                <field name="employee_id" groups="hr.group_hr_user" optional="hide"/>
+                <field name="meeting_id" optional="hide"/>
+                <field name="smart_status" optional="hide" widget="badge"
+                       decoration-danger="smart_status in ['delayed', 'done_delayed']"
+                       decoration-success="smart_status == 'done'"
+                       decoration-info="smart_status == 'in_progress'"/>
+                <field name="progress_percent" optional="hide"/>
+                <field name="completion_date" optional="hide"/>
+                <field name="is_routine_work" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Core task search: meeting field, filters and group by -->
+    <record id="view_task_search_inherit_meeting" model="ir.ui.view">
+        <field name="name">project.task.search.inherit.meeting</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_search_form_base"/>
+        <field name="arch" type="xml">
+            <xpath expr="/search" position="inside">
+                <field name="meeting_id"/>
+                <field name="employee_id" groups="hr.group_hr_user"/>
+                <filter name="filter_from_meeting" string="From a Meeting"
+                        domain="[('meeting_id', '!=', False)]"/>
+                <filter name="filter_routine_work" string="Routine Work"
+                        domain="[('is_routine_work', '=', True)]"/>
+                <separator/>
+                <filter name="filter_delayed" string="Delayed"
+                        domain="[('smart_status', 'in', ['delayed', 'done_delayed'])]"/>
+                <group>
+                    <filter name="group_by_meeting" string="Meeting"
+                            context="{'group_by': 'meeting_id'}"/>
+                    <filter name="group_by_employee" string="Assigned Employee"
+                            groups="hr.group_hr_user"
+                            context="{'group_by': 'employee_id'}"/>
+                    <filter name="group_by_smart_status" string="Smart Status"
+                            context="{'group_by': 'smart_status'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Compact form opened in a popup when adding/editing a task from a meeting -->
+    <record id="view_meeting_task_form" model="ir.ui.view">
+        <field name="name">project.task.form.meeting.popup</field>
+        <field name="model">project.task</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <form string="Task">
+                <sheet>
+                    <div class="oe_title pe-0">
+                        <h1 class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex w-100">
+                                <field name="priority" widget="priority_switch" class="me-3"/>
+                                <field name="name" class="o_task_name text-truncate w-100" placeholder="Task Title..."/>
+                            </div>
+                            <field name="state" widget="project_task_state_selection" class="o_task_state_widget"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id" groups="hr.group_hr_user"
+                                   options="{'no_create': True, 'no_create_edit': True}"/>
+                            <field name="user_ids" widget="many2many_avatar_user"
+                                   required="not project_id"
+                                   options="{'no_open': True, 'no_quick_create': True}"/>
+                            <field name="project_id" options="{'no_create': True}"/>
+                            <field name="meeting_id" invisible="context.get('default_meeting_id')"
+                                   options="{'no_create': True, 'no_create_edit': True}"/>
+                        </group>
+                        <group>
+                            <field name="date_deadline"/>
+                            <field name="progress_percent"/>
+                            <field name="completion_date"/>
+                            <field name="smart_status" readonly="1"/>
+                            <field name="is_routine_work"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="description" string="Description">
+                            <field name="description" placeholder="Add details about this task..."/>
+                        </page>
+                        <page name="remarks" string="Remarks">
+                            <field name="remarks" placeholder="Notes, blockers, follow-up..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Dedicated list used inside a meeting and by the Meeting > Tasks menu -->
+    <record id="view_meeting_task_list" model="ir.ui.view">
+        <field name="name">project.task.list.meeting</field>
+        <field name="model">project.task</field>
+        <field name="arch" type="xml">
+            <list string="Tasks" default_order="smart_status_order asc, date_deadline asc">
+                <field name="smart_status_order" column_invisible="True"/>
+                <field name="name" string="Task Title"/>
+                <field name="employee_id" groups="hr.group_hr_user"
+                       options="{'no_create': True, 'no_create_edit': True}"/>
+                <field name="user_ids" widget="many2many_avatar_user" optional="show"/>
+                <field name="project_id" options="{'no_create': True}" optional="show"/>
+                <field name="meeting_id" optional="hide"
+                       column_invisible="context.get('default_meeting_id')"/>
+                <field name="date_deadline"
+                       decoration-danger="date_deadline and date_deadline &lt; current_date and state not in ['1_done', '1_canceled']"/>
+                <field name="completion_date" optional="show"/>
+                <field name="progress_percent" optional="show"/>
+                <field name="is_routine_work" optional="hide"/>
+                <field name="priority" widget="priority" optional="hide"/>
+                <field name="smart_status" widget="badge" readonly="1"
+                       decoration-danger="smart_status in ['delayed', 'done_delayed']"
+                       decoration-success="smart_status == 'done'"
+                       decoration-info="smart_status == 'in_progress'"/>
+                <field name="state" widget="project_task_state_selection"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_meeting_task" model="ir.actions.act_window">
+        <field name="name">Meeting Tasks</field>
+        <field name="res_model">project.task</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="view_id" ref="view_meeting_task_list"/>
+        <field name="domain">[('meeting_id', '!=', False)]</field>
+        <field name="context">{'search_default_group_by_smart_status': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No task has come out of a meeting yet</p>
+            <p>Open a meeting and add tasks in its Tasks tab; they will show up here.</p>
+        </field>
+    </record>
+</odoo>

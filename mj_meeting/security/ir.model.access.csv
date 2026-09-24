@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_meeting_hr_user,access.meeting.hr.user,model_hr_meeting,hr.group_hr_user,1,1,1,1
+access_meeting_internal_read,access.meeting.internal.read,model_hr_meeting,base.group_user,1,0,0,0
