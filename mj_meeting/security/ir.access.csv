@@ -1,0 +1,3 @@
+id,name,model_id,group_id/id,operation,domain
+access_meeting_hr_user,access.meeting.hr.user,hr.meeting,hr.group_hr_user,crud,
+access_meeting_internal_read,access.meeting.internal.read,hr.meeting,base.group_user,r,

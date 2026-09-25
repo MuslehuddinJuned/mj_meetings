@@ -75,7 +75,7 @@ Nothing is removed from the task form. These fields are added, mostly on a
 - **Completion Date** - filled in when the task closes, and still editable.
 - **Smart Status** - computed, as described above.
 
-Assigned Employee is limited to the HR Officer group, because Odoo 19 restricts
+Assigned Employee is limited to the HR Officer group, because Odoo 20 restricts
 employee records to HR. Every other user keeps working with Odoo's standard
 Assignees field, which this module keeps in step.
 
