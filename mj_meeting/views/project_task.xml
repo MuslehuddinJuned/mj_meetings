@@ -6,7 +6,7 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='role_ids']" position="after">
+            <xpath expr="//field[@name='user_ids']" position="after">
                 <field name="employee_id"
                        groups="hr.group_hr_user"
                        options="{'no_create': True, 'no_create_edit': True}"/>

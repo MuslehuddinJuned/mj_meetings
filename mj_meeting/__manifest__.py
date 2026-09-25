@@ -1,6 +1,6 @@
 {
     'name': 'Meeting',
-    'version': '19.0.1.0.0',
+    'version': '18.0.1.0.0',
     'summary': 'This module provides functionalities for managing meetings, including scheduling, tracking, task Management and reporting.',
     'description': 'This module provides functionalities for managing meetings, including scheduling, tracking, task Management and reporting.',
     'author': 'Musleh Uddin Juned',
