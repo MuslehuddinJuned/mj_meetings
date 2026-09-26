@@ -86,10 +86,13 @@ class ProjectTask(models.Model):
             return False
         return fields.Datetime.context_timestamp(self, self.date_deadline).date()
 
-    @api.depends('state', 'date_end')
+    @api.depends('state', 'date_end', 'is_routine_work')
     def _compute_completion_date(self):
         for task in self:
-            if task.state in CLOSED_STATES:
+            if task.is_routine_work:
+                # Routine work is never "completed": it just keeps running.
+                task.completion_date = False
+            elif task.state in CLOSED_STATES:
                 if not task.completion_date:
                     closed_on = task.date_end or fields.Datetime.now()
                     task.completion_date = fields.Datetime.context_timestamp(
@@ -97,13 +100,17 @@ class ProjectTask(models.Model):
             else:
                 task.completion_date = False
 
-    @api.depends('state', 'date_deadline', 'completion_date')
+    @api.depends('state', 'date_deadline', 'completion_date', 'is_routine_work')
     def _compute_smart_status(self):
         today = fields.Date.context_today(self)
         for task in self:
             deadline = task._deadline_date()
             overdue = bool(deadline and deadline < today)
-            if task.state == CANCELED_STATE:
+            if task.is_routine_work:
+                # Routine work has no deadline to miss and no end: it is
+                # always considered In Progress, whatever the state says.
+                status = 'in_progress'
+            elif task.state == CANCELED_STATE:
                 status = 'canceled'
             elif task.state == DONE_STATE:
                 late = bool(
@@ -134,6 +141,13 @@ class ProjectTask(models.Model):
                     task=task.display_name,
                 ))
 
+    @api.onchange('is_routine_work')
+    def _onchange_is_routine_work(self):
+        """Routine work tracks no progress and no completion date."""
+        for task in self:
+            if task.is_routine_work:
+                task.progress_percent = 0.0
+    
     @api.onchange('employee_id')
     def _onchange_employee_id(self):
         """Mirror the employee onto the native Assignees so core project keeps working."""
